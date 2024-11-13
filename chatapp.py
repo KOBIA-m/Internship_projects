@@ -90,5 +90,6 @@ def on_leave(data):
     send(f'{username} has left the room.', room=room)
 
 if __name__ == '__main__':
+ with app.app_context():
     db.create_all()
     socketio.run(app, debug=True)
