@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat</title>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h2>Chat</h2>
+    <div id="chat-box"></div>
+    <input type="text" id="message" placeholder="Enter message">
+    <button onclick="sendMessage()">Send</button>
+    <script type="text/javascript">
+        var socket = io();
+        var room = "main";
+        var username = "{{ username }}";
+        
+        socket.on('connect', function() {
+            socket.emit('join', {'username': username, 'room': room});
+        });
+
+        socket.on('message', function(msg) {
+            $('#chat-box').append('<div>' + msg.message + '</div>');
+        });
+
+        function sendMessage() {
+            var message = $('#message').val();
+            socket.emit('message', {'username': username, 'room': room, 'message': message});
+            $('#message').val('');
+        }
+    </script>
+</body>
+</html>
